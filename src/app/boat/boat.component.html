@@ -1,0 +1,7 @@
+<input [(ngModel)]="deviceName" type="text" class="boat-name-selector" />
+<input [(ngModel)]="callSign" type="text" class="call-sign-selector" />
+
+<form (submit)="sendMessage()" [formGroup]="messageForm">
+  <textarea formControlName="message"></textarea>
+  <button type="submit">Submit</button>
+</form>
