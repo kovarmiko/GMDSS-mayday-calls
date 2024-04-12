@@ -5,7 +5,7 @@ import {
   DistressMessage,
 } from '../types/types';
 import { MessageService } from '../core/services/message.service';
-import { takeUntil } from 'rxjs';
+import { Subscription, takeUntil } from 'rxjs';
 import { BoatNameService } from '../core/services/boat-name.service';
 import { Boat } from '../app.component';
 
@@ -23,11 +23,11 @@ export class RadioComponent
     this.deviceName = info.boatName
   }
   public messageForm = createMessageForm();
-
   public messages: DistressMessage[] = [];
-
   public deviceName = ''
   public callSign = ''
+
+  private sub = new Subscription()
 
   constructor(
     private messageService: MessageService,
@@ -39,29 +39,26 @@ export class RadioComponent
   ngOnInit() {
     // Connect to WebSocket server and subscribe to messages
 
-    this.messageService.ready$.subscribe(() => {
+    this.sub.add(this.messageService.ready$.subscribe(() => {
       this.messageService.sendMessage(this.createConnectionMessage('connect'));
-    });
+    }));
 
-    this.messageService.closed$.subscribe(() => {
+    this.sub.add(this.messageService.closed$.subscribe(() => {
       this.messageService.sendMessage(
         this.createConnectionMessage('disconnect')
       );
-    });
+    }));
 
     // TODO: move web socket url into .env file
-    const {transmission$, clients$} = this.messageService.connect('ws://localhost:8080');
+    const {transmission$} = this.messageService.connect('ws://localhost:8080');
 
-    clients$.subscribe(m => console.log(`in boat clients`, m))
 
-    transmission$
-      .pipe(takeUntil(this.messageService.closed$))
+    this.sub.add(transmission$
       .subscribe({
         next: (m) => m && this.receiveMessage(m),
         error: (e: unknown) => console.error(e),
-
         complete: () => console.info('completed clients transmission'),
-      });
+      }));
   }
 
   ngOnDestroy(): void {
@@ -70,6 +67,7 @@ export class RadioComponent
       callSign: this.callSign,
     });
     this.messageService.closed$.next(true);
+    this.sub.unsubscribe()
   }
 
   sendMessage(): void {
