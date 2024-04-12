@@ -4,7 +4,7 @@ import { ClientsMessage, DistressMessage } from '../types/types';
 export function createEmptyMessage(): DistressMessage {
   return {
     deviceName: '',
-    boatCallSign: '',
+    callSign: '',
     message: '',
     timestamp: 0,
     type: 'transmission',
@@ -15,7 +15,7 @@ export function createEmptyClientMesage(): ClientsMessage {
     clients: [
       {
         deviceName: '',
-        boatCallSign: '',
+        callSign: '',
       },
     ],
     type: 'client',

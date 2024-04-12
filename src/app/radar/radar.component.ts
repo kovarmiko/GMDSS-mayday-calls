@@ -64,7 +64,7 @@ export class RadarComponent implements OnInit, OnDestroy {
   ): ConnectionMessage {
     return {
       deviceName: this.deviceName,
-      boatCallSign: this.callSign,
+      callSign: this.callSign,
       type,
     };
   }

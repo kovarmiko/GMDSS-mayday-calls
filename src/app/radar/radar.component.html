@@ -2,7 +2,7 @@
 
 <ul class="ps-0">
   @for (boat of boatsInRange; track $index) {
-  <li >{{ boat.deviceName }} {{ boat.boatCallSign }}</li>
+  <li >{{ boat.deviceName }} {{ boat.callSign }}</li>
   } @empty {
     There are no boats on the radar
   }

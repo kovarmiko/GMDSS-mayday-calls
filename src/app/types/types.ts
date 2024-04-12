@@ -1,6 +1,6 @@
 export interface Client {
   deviceName: string;
-  boatCallSign: string;
+  callSign: string;
 }
 
 export interface DistressMessage extends Client {

@@ -1,10 +1,29 @@
-<input [(ngModel)]="deviceName" type="text" class="boat-name-selector" />
-<input [(ngModel)]="callSign" type="text" class="call-sign-selector" />
-
-<form #form="ngForm" (submit)="sendMessage() && form.resetForm()" [formGroup]="messageForm">
-  <textarea class="message-control" placeholder="Enter message here" formControlName="message"></textarea>
+@if (type === 'boat') {
+<input
+  [(ngModel)]="deviceName"
+  type="text"
+  class="boat-name-selector mb-2"
+/><button type="button" (click)="changeDeviceName()">Change</button>
+<input
+  [(ngModel)]="callSign"
+  type="text"
+  class="call-sign-selector mb-2"
+/>
+<button type="button" (click)="changeDeviceName()">Change</button>
+}
+<form
+  #form="ngForm"
+  (submit)="sendMessage() && form.resetForm()"
+  [formGroup]="messageForm"
+  class="mt-1"
+>
+  <textarea
+    class="message-control"
+    placeholder="Enter message here"
+    formControlName="message"
+  ></textarea>
   @if(messageForm.controls.message.invalid && form.submitted){
-    <p class="text-danger">Please provide a valid message entry</p>
+  <p class="text-danger">Please provide a valid message entry</p>
   }
 
   <button class="d-block" type="submit">Send</button>
@@ -13,9 +32,8 @@
 <ul class="list-group">
   @for (message of messages; track $index) {
   <li class="list-group-item font-small">
-    {{ message.deviceName }} ({{message.boatCallSign}}) {{ message.timestamp | date: 'short':'UTC' }}: {{ message.message }}
-  </li> 
-  } @empty {
-    There are no messages
-  }
+    {{ message.deviceName }} ({{ message.callSign }})
+    {{ message.timestamp | date : "short" : "UTC" }}: {{ message.message }}
+  </li>
+  } @empty { There are no messages }
 </ul>

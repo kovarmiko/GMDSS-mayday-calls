@@ -20,7 +20,7 @@
     @for (boatName of boats; track $index) {
     <div class="col-12 col-lg-4 p-4 d-flex justify-content-center water-background">
       <boat [name]="boatName">
-        <button type="button" (click)="releaseBoat(boatName)">
+        <button class="mb-2" type="button" (click)="releaseBoat(boatName)">
           Remove Boat
         </button>
         <safety-dashboard>

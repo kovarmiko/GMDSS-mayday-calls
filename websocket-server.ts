@@ -1,13 +1,15 @@
 import WebSocket from 'ws';
 import {
+  Client,
   ClientsMessage,
   ConnectionMessage,
   MessageType,
+  RenameMessage,
 } from './src/app/types/types';
 const port = 8080;
 const wss = new WebSocket.Server({ port });
 
-const clients = new Set<Omit<ConnectionMessage, 'type'>>();
+let clients = new Set<Client>();
 
 console.log(
   `WebSocket server is now running on ${JSON.stringify(wss.address())}`
@@ -40,22 +42,18 @@ wss.on('connection', function connection(ws) {
       switch (message.type) {
         case 'connect':
           clients.add({
-            boatCallSign: message.boatCallSign,
+            callSign: message.callSign,
             deviceName: message.deviceName,
           });
           messageClientList(ws);
 
           break;
         case 'disconnect':
-          deleteClientByCallSign(message.boatCallSign);
+          deleteClientByCallSign(message.callSign);
           messageClientList(ws);
           break;
         case 'rename':
-          deleteClientByCallSign(message.old.boatCallSign);
-          clients.add({
-            boatCallSign: message.boatCallSign,
-            deviceName: message.deviceName,
-          });
+         clients = updateItemInClientSet(message);
           messageClientList(ws);
           break;
         case 'transmission':
@@ -94,5 +92,27 @@ function broadcast(message: string) {
 }
 
 function deleteClientByCallSign(callSign: string) {
-  clients.forEach((c) => (c.boatCallSign === callSign ? clients.delete(c) : c));
+  clients.forEach((c, index) =>
+    c.callSign === callSign ? clients.delete(c) : c
+  );
+}
+
+function updateItemInClientSet(message: RenameMessage) {
+  const updatedSet = new Set<Client>();
+
+  clients.forEach((item) => {
+    if (
+      item.callSign === message.old.callSign &&
+      item.deviceName === message.old.deviceName
+    ) {
+      updatedSet.add({
+        callSign: message.callSign,
+        deviceName: message.deviceName,
+      });
+    } else {
+      updatedSet.add(item);
+    }
+  });
+
+  return updatedSet;
 }

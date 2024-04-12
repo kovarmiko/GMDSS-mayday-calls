@@ -11,6 +11,7 @@ import {
   ClientsMessage,
   DistressMessage,
   MessageType,
+  RenameMessage,
 } from '../../types/types';
 import {
   handleErrors,

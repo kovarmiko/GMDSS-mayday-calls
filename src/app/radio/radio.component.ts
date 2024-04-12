@@ -1,6 +1,11 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { createMessageForm } from '../forms/forms';
-import { ConnectionMessage, DistressMessage } from '../types/types';
+import {
+  Client,
+  ConnectionMessage,
+  DistressMessage,
+  RenameMessage,
+} from '../types/types';
 import { MessageService } from '../core/services/message.service';
 import { Subscription } from 'rxjs';
 import { BoatNameService } from '../core/services/boat-name.service';
@@ -13,16 +18,19 @@ import { DeviceName } from '../app.component';
   providers: [MessageService],
 })
 export class RadioComponent implements OnInit, OnDestroy {
-  @Input() set name(info: DeviceName) {
+  @Input() set name(info: Client) {
     this.callSign = info.callSign;
     this.deviceName = info.deviceName;
+    this.receivedName = { ...info };
   }
 
   @Input() type: 'boat' | 'station' = 'boat';
   public messageForm = createMessageForm();
   public messages: DistressMessage[] = [];
+
   public deviceName = '';
   public callSign = '';
+  public receivedName!: DeviceName;
 
   private sub = new Subscription();
 
@@ -84,7 +92,7 @@ export class RadioComponent implements OnInit, OnDestroy {
     console.log(`Boat ${this.deviceName} sending message: ${message}`);
     // Implementation for sending a message, e.g., using a WebSocket service
     const distressMessage: DistressMessage = {
-      boatCallSign: this.callSign,
+      callSign: this.callSign,
       deviceName: this.deviceName,
       message: message ?? '',
       type: 'transmission',
@@ -99,12 +107,30 @@ export class RadioComponent implements OnInit, OnDestroy {
     this.messages = [...this.messages, message];
   }
 
+  changeDeviceName() {
+    if (
+      this.deviceName === this.receivedName.deviceName &&
+      this.callSign === this.receivedName.callSign
+    ) {
+      return;
+    }
+
+    const message: RenameMessage = {
+      old: this.receivedName,
+      type: 'rename',
+      deviceName: this.deviceName,
+      callSign: this.callSign,
+    };
+
+    this.messageService.sendMessage(message);
+  }
+
   private createConnectionMessage(
     type: ConnectionMessage['type']
   ): ConnectionMessage {
     return {
       deviceName: this.deviceName,
-      boatCallSign: this.callSign,
+      callSign: this.callSign,
       type,
     };
   }
