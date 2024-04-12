@@ -1,0 +1,7 @@
+<h2>Boats in Radion</h2>
+
+<ul>
+  @for (boat of boatsInRange; track $index) {
+  <li>{{ boat.boatName }} {{ boat.boatCallSign }}</li>
+  }
+</ul>

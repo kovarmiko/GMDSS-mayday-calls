@@ -5,3 +5,12 @@
   <textarea formControlName="message"></textarea>
   <button type="submit">Submit</button>
 </form>
+
+<ul>
+  @for (message of messages; track $index) {
+  <li>
+    {{ message.timestamp | date }} {{ message.boatCallSign }}
+    {{ message.boatName }}: {{ message.message }}
+  </li>
+  }
+</ul>

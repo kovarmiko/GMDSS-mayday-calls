@@ -1,4 +1,12 @@
-<safety-boat></safety-boat>
-<safety-boat></safety-boat>
+<button type="button" (click)="addBoat()">Add Boat</button>
+
+
+@for (boat of boats; track $index) {
+    <safety-radio [name]="boat"></safety-radio><button type="button" (click)="releaseBoat(boat)">Release Boat</button>
+}
+
+
+<safety-radar [name]="rescueStationName"></safety-radar>
+
 
 <router-outlet></router-outlet>

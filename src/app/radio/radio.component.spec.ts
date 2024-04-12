@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { RescueStationComponent } from './rescue-station.component';
+import { RadioComponent } from './radio.component';
 
-describe('RescueStationComponent', () => {
-  let component: RescueStationComponent;
-  let fixture: ComponentFixture<RescueStationComponent>;
+describe('RadioComponent', () => {
+  let component: RadioComponent;
+  let fixture: ComponentFixture<RadioComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RescueStationComponent]
+      declarations: [RadioComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(RescueStationComponent);
+    fixture = TestBed.createComponent(RadioComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

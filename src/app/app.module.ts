@@ -3,16 +3,16 @@ import { BrowserModule, provideClientHydration } from '@angular/platform-browser
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { BoatComponent } from './boat/boat.component';
-import { RescueStationComponent } from './rescue-station/rescue-station.component';
+import { RadioComponent } from './radio/radio.component';
+import { RadarComponent } from './radar/radar.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BoatComponent,
-    RescueStationComponent,
+    RadioComponent,
+    RadarComponent,
   ],
   imports: [
     BrowserModule,
@@ -22,7 +22,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
   ],
   providers: [
-    provideClientHydration()
+    provideClientHydration(),
+    // MessageService,
   ],
   bootstrap: [AppComponent]
 })
