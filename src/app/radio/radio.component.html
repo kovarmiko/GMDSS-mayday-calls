@@ -2,15 +2,15 @@
 <input [(ngModel)]="callSign" type="text" class="call-sign-selector" />
 
 <form (submit)="sendMessage()" [formGroup]="messageForm">
-  <textarea formControlName="message"></textarea>
-  <button type="submit">Submit</button>
+  <textarea placeholder="Enter message here" formControlName="message"></textarea>
+  <button class="d-block" type="submit">Send</button>
 </form>
 
 <ul>
   @for (message of messages; track $index) {
   <li>
     {{ message.timestamp | date }} {{ message.boatCallSign }}
-    {{ message.boatName }}: {{ message.message }}
+    {{ message.deviceName }}: {{ message.message }}
   </li>
   }
 </ul>

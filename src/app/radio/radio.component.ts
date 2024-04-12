@@ -5,9 +5,9 @@ import {
   DistressMessage,
 } from '../types/types';
 import { MessageService } from '../core/services/message.service';
-import { Subscription, takeUntil } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { BoatNameService } from '../core/services/boat-name.service';
-import { Boat } from '../app.component';
+import { DeviceName } from '../app.component';
 
 @Component({
   selector: 'safety-radio',
@@ -18,10 +18,12 @@ import { Boat } from '../app.component';
 export class RadioComponent
   implements OnInit, OnDestroy
 {
-  @Input() set name(info: Boat) {
+  @Input() set name(info: DeviceName) {
     this.callSign = info.callSign
-    this.deviceName = info.boatName
+    this.deviceName = info.deviceName
   }
+
+  @Input() type: 'boat' | 'station' = 'boat'
   public messageForm = createMessageForm();
   public messages: DistressMessage[] = [];
   public deviceName = ''
@@ -33,15 +35,16 @@ export class RadioComponent
     private messageService: MessageService,
     private boatNameService: BoatNameService
   ) {
-    const { boatName, callSign } = boatNameService.getFirstAvailableBoatName();
   }
 
   ngOnInit() {
-    // Connect to WebSocket server and subscribe to messages
+    // don't send message for radar if you are not a boat
+    if(this.type !== 'station') {
+      this.sub.add(this.messageService.ready$.subscribe(() => {
+        this.messageService.sendMessage(this.createConnectionMessage('connect'));
+      }));
+    }
 
-    this.sub.add(this.messageService.ready$.subscribe(() => {
-      this.messageService.sendMessage(this.createConnectionMessage('connect'));
-    }));
 
     this.sub.add(this.messageService.closed$.subscribe(() => {
       this.messageService.sendMessage(
@@ -63,7 +66,7 @@ export class RadioComponent
 
   ngOnDestroy(): void {
     this.boatNameService.releaseBoatName({
-      boatName: this.deviceName,
+      deviceName: this.deviceName,
       callSign: this.callSign,
     });
     this.messageService.closed$.next(true);
@@ -81,7 +84,7 @@ export class RadioComponent
     // Implementation for sending a message, e.g., using a WebSocket service
     const distressMessage: DistressMessage = {
       boatCallSign: this.callSign,
-      boatName: this.deviceName,
+      deviceName: this.deviceName,
       message: message,
       type: 'transmission',
       timestamp: Date.now(),
@@ -99,7 +102,7 @@ export class RadioComponent
     type: ConnectionMessage['type']
   ): ConnectionMessage {
     return {
-      boatName: this.deviceName,
+      deviceName: this.deviceName,
       boatCallSign: this.callSign,
       type,
     };

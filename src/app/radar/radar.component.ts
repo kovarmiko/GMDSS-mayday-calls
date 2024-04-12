@@ -63,7 +63,7 @@ export class RadarComponent implements OnInit, OnDestroy {
     type: ConnectionMessage['type']
   ): ConnectionMessage {
     return {
-      boatName: this.deviceName,
+      deviceName: this.deviceName,
       boatCallSign: this.callSign,
       type,
     };

@@ -7,12 +7,18 @@ import { RadioComponent } from './radio/radio.component';
 import { RadarComponent } from './radar/radar.component';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { BoatComponent } from './boat/boat.component';
+import { RescueStationComponent } from './rescue-station/rescue-station.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     RadioComponent,
     RadarComponent,
+    DashboardComponent,
+    BoatComponent,
+    RescueStationComponent,
   ],
   imports: [
     BrowserModule,

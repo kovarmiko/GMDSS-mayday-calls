@@ -3,7 +3,11 @@ import { Client } from './types/types';
 import { BoatNameService } from './core/services/boat-name.service';
 
 export interface Boat {
-  boatName: string;
+  deviceName: string;
+  callSign: string;
+}
+export interface DeviceName {
+  deviceName: string;
   callSign: string;
 }
 

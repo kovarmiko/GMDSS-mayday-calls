@@ -41,7 +41,7 @@ wss.on('connection', function connection(ws) {
         case 'connect':
           clients.add({
             boatCallSign: message.boatCallSign,
-            boatName: message.boatName,
+            deviceName: message.deviceName,
           });
           messageClientList(ws);
 
@@ -54,7 +54,7 @@ wss.on('connection', function connection(ws) {
           deleteClientByCallSign(message.old.boatCallSign);
           clients.add({
             boatCallSign: message.boatCallSign,
-            boatName: message.boatName,
+            deviceName: message.deviceName,
           });
           messageClientList(ws);
           break;

@@ -1,5 +1,5 @@
 export interface Client {
-  boatName: string;
+  deviceName: string;
   boatCallSign: string;
 }
 

@@ -1,7 +1,9 @@
-<h2>Boats in Radion</h2>
+<h6>Boats on Radar</h6>
 
-<ul>
+<ul class="ps-0">
   @for (boat of boatsInRange; track $index) {
-  <li>{{ boat.boatName }} {{ boat.boatCallSign }}</li>
+  <li >{{ boat.deviceName }} {{ boat.boatCallSign }}</li>
+  } @empty {
+    There are no boats on the radar
   }
 </ul>
