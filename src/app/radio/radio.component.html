@@ -1,16 +1,21 @@
 <input [(ngModel)]="deviceName" type="text" class="boat-name-selector" />
 <input [(ngModel)]="callSign" type="text" class="call-sign-selector" />
 
-<form (submit)="sendMessage()" [formGroup]="messageForm">
-  <textarea placeholder="Enter message here" formControlName="message"></textarea>
+<form #form="ngForm" (submit)="sendMessage() && form.resetForm()" [formGroup]="messageForm">
+  <textarea class="message-control" placeholder="Enter message here" formControlName="message"></textarea>
+  @if(messageForm.controls.message.invalid && form.submitted){
+    <p class="text-danger">Please provide a valid message entry</p>
+  }
+
   <button class="d-block" type="submit">Send</button>
 </form>
-
-<ul>
+<h6 class="messages mt-3">Messages</h6>
+<ul class="list-group">
   @for (message of messages; track $index) {
-  <li>
-    {{ message.timestamp | date }} {{ message.boatCallSign }}
-    {{ message.deviceName }}: {{ message.message }}
-  </li>
+  <li class="list-group-item font-small">
+    {{ message.deviceName }} ({{message.boatCallSign}}) {{ message.timestamp | date: 'short':'UTC' }}: {{ message.message }}
+  </li> 
+  } @empty {
+    There are no messages
   }
 </ul>
