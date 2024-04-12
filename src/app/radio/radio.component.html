@@ -11,6 +11,10 @@
 />
 <button type="button" (click)="changeDeviceName()">Change</button>
 }
+
+@if (type === 'station') {
+  <textarea [(ngModel)]="keywords" placeholder="Insert comma separated keywords"></textarea>
+}
 <form
   #form="ngForm"
   (submit)="sendMessage() && form.resetForm()"

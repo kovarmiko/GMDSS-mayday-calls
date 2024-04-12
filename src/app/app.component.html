@@ -1,10 +1,5 @@
 <div class="container">
   <div class="row">
-    <div class="col-12 d-flex justify-content-center mb-2">
-      <button type="button" (click)="addBoat()">Add Boat</button>
-    </div>
-  </div>
-  <div class="row">
     <div class="col-12 col-lg-4 p-4 d-flex justify-content-center land-background">
       <rescue-station [name]="rescueStationName">
         <safety-dashboard>
@@ -20,9 +15,6 @@
     @for (boatName of boats; track $index) {
     <div class="col-12 col-lg-4 p-4 d-flex justify-content-center water-background">
       <boat [name]="boatName">
-        <button class="mb-2" type="button" (click)="releaseBoat(boatName)">
-          Remove Boat
-        </button>
         <safety-dashboard>
           <safety-radio [name]="boatName"></safety-radio>
         </safety-dashboard>

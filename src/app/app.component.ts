@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { Client } from './types/types';
 import { BoatNameService } from './core/services/boat-name.service';
 import { MessageService } from './core/services/message.service';
 
@@ -21,7 +20,11 @@ export interface DeviceName {
 export class AppComponent implements OnInit {
   title = 'safety-system';
 
-  boats: Boat[] = [];
+  boats: Boat[] = [
+    this.boatNameService.getFirstAvailableBoatName(),
+    this.boatNameService.getFirstAvailableBoatName(),
+    this.boatNameService.getFirstAvailableBoatName(),
+  ];
 
   rescueStationName = {
     deviceName: 'Rescue Station',
@@ -35,21 +38,17 @@ export class AppComponent implements OnInit {
 
   addBoat() {
     this.boats = [
-      ...this.boats,
+      this.boatNameService.getFirstAvailableBoatName(),
+      this.boatNameService.getFirstAvailableBoatName(),
       this.boatNameService.getFirstAvailableBoatName(),
     ];
   }
 
   ngOnInit() {
-    const { clients$ } = this.messageService.connect('ws://localhost:8080');
+    // const { clients$ } = this.messageService.connect('ws://localhost:8080');
 
-    clients$.subscribe((clients) => {
-      this.boats = clients.clients;
-    });
-  }
-
-  releaseBoat(boat: Boat) {
-    this.boats = this.boats.filter((item) => item.callSign !== boat.callSign);
-    this.boatNameService.releaseBoatName(boat);
+    // clients$.subscribe((clients) => {
+    //   this.boats = clients.clients;
+    // });
   }
 }

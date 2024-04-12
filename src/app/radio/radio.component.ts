@@ -30,6 +30,7 @@ export class RadioComponent implements OnInit, OnDestroy {
 
   public deviceName = '';
   public callSign = '';
+  public keywords = '';
   public receivedName!: DeviceName;
 
   private sub = new Subscription();
@@ -74,11 +75,7 @@ export class RadioComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.boatNameService.releaseBoatName({
-      deviceName: this.deviceName,
-      callSign: this.callSign,
-    });
-    this.messageService.closed$.next(true);
+
     this.sub.unsubscribe();
   }
 
@@ -105,6 +102,28 @@ export class RadioComponent implements OnInit, OnDestroy {
   receiveMessage(message: DistressMessage): void {
     console.log(`Boat ${this.deviceName} received message:`, message);
     this.messages = [...this.messages, message];
+    if (this.type === 'station') {
+      this.alertUser(message);
+    }
+  }
+
+  alertUser(message: DistressMessage) {
+    const keyWords = this.keywords
+      .split(',')
+      .map((word) => word.toLowerCase().trim());
+    const messageWords = message.message
+      .split(' ')
+      .map((word) => word.toLowerCase().trim());
+
+    messageWords.some((word) => {
+      if (keyWords.includes(word)) {
+        alert(
+          `user: ${message.deviceName} issued message ${message.message} containing keyword: ${word}`
+        );
+        return true;
+      }
+      return false;
+    });
   }
 
   changeDeviceName() {
