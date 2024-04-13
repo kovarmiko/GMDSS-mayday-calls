@@ -75,7 +75,6 @@ export class RadioComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-
     this.sub.unsubscribe();
   }
 
@@ -87,7 +86,6 @@ export class RadioComponent implements OnInit, OnDestroy {
     }
 
     console.log(`Boat ${this.deviceName} sending message: ${message}`);
-    // Implementation for sending a message, e.g., using a WebSocket service
     const distressMessage: DistressMessage = {
       callSign: this.callSign,
       deviceName: this.deviceName,
@@ -112,6 +110,7 @@ export class RadioComponent implements OnInit, OnDestroy {
       .split(',')
       .map((word) => word.toLowerCase().trim());
     const messageWords = message.message
+      .replace(/[\W]+/, ' ')
       .split(' ')
       .map((word) => word.toLowerCase().trim());
 

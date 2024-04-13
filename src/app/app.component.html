@@ -1,19 +1,25 @@
 <div class="container">
   <div class="row">
-    <div class="col-12 col-lg-4 p-4 d-flex justify-content-center land-background">
-      <rescue-station [name]="rescueStationName">
-        <safety-dashboard>
-          <safety-radio
-            type="station"
-            [name]="rescueStationName"
-          ></safety-radio>
-          <safety-radar [name]="rescueStationName"></safety-radar>
-        </safety-dashboard>
-      </rescue-station>
+    <div
+      class="col-12 col-lg-4 p-4 d-flex justify-content-center"
+    >
+      <safety-island>
+        <rescue-station [name]="rescueStationName">
+          <safety-dashboard>
+            <safety-radio
+              type="station"
+              [name]="rescueStationName"
+            ></safety-radio>
+            <safety-radar [name]="rescueStationName"></safety-radar>
+          </safety-dashboard>
+        </rescue-station>
+      </safety-island>
     </div>
 
     @for (boatName of boats; track $index) {
-    <div class="col-12 col-lg-4 p-4 d-flex justify-content-center water-background">
+    <div
+      class="col-12 col-lg-4 p-4 d-flex justify-content-center water-background"
+    >
       <boat [name]="boatName">
         <safety-dashboard>
           <safety-radio [name]="boatName"></safety-radio>

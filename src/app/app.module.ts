@@ -10,6 +10,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { BoatComponent } from './boat/boat.component';
 import { RescueStationComponent } from './rescue-station/rescue-station.component';
+import { IslandComponent } from './island/island.component';
 
 @NgModule({
   declarations: [
@@ -19,6 +20,7 @@ import { RescueStationComponent } from './rescue-station/rescue-station.componen
     DashboardComponent,
     BoatComponent,
     RescueStationComponent,
+    IslandComponent,
   ],
   imports: [
     BrowserModule,
