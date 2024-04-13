@@ -1,6 +1,8 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RadioComponent } from './radio.component';
+import { MessageService } from '../core/services/message.service';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 describe('RadioComponent', () => {
   let component: RadioComponent;
@@ -8,7 +10,11 @@ describe('RadioComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [RadioComponent]
+      declarations: [RadioComponent],
+      imports: [FormsModule, ReactiveFormsModule],
+      providers: [
+        {provide: MessageService, useClass: FakeMessageService}
+      ]
     })
     .compileComponents();
     
@@ -21,3 +27,7 @@ describe('RadioComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+export class FakeMessageService {
+
+}
