@@ -17,10 +17,7 @@
       class="col-12 col-lg-4 p-4 d-flex justify-content-center water-background"
     >
       <boat
-        [name]="{
-          deviceName: safetyRadio.deviceName,
-          callSign: safetyRadio.callSign
-        }"
+        [name]="safetyRadio.receivedName"
       >
         <safety-dashboard>
           <safety-radio #safetyRadio [name]="boatName"></safety-radio>

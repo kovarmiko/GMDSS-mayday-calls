@@ -31,7 +31,7 @@ export class RadioComponent implements OnInit, OnDestroy {
   public deviceName = '';
   public callSign = '';
   public keywords = '';
-  public receivedName!: DeviceName;
+  public receivedName: DeviceName = {deviceName: '', callSign: ''}
 
   private sub = new Subscription();
 
@@ -140,7 +140,7 @@ export class RadioComponent implements OnInit, OnDestroy {
     };
 
     this.messageService.sendMessage(message);
-    this.receivedName = message
+    this.receivedName = message;
   }
 
   private createConnectionMessage(
