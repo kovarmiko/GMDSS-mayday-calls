@@ -3,6 +3,7 @@ import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { RadioComponent } from './radio.component';
 import { MessageService } from '../core/services/message.service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { WebSocketFactoryService } from '../core/services/websocket-factory.service';
 
 describe('RadioComponent', () => {
   let component: RadioComponent;
@@ -13,7 +14,8 @@ describe('RadioComponent', () => {
       declarations: [RadioComponent],
       imports: [FormsModule, ReactiveFormsModule],
       providers: [
-        {provide: MessageService, useClass: FakeMessageService}
+        MessageService,
+        {provide: WebSocketFactoryService, useClass: WebSocketFactoryService!}
       ]
     })
     .compileComponents();

@@ -1,11 +1,6 @@
 import { Injectable } from '@angular/core';
-import { WebSocketSubject, webSocket } from 'rxjs/webSocket';
-import {
-  catchError,
-  filter,
-  share,
-  tap,
-} from 'rxjs/operators';
+import { WebSocketSubject } from 'rxjs/webSocket';
+import { catchError, filter, share, tap } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import {
   ClientsMessage,
@@ -13,9 +8,8 @@ import {
   MessageType,
   RenameMessage,
 } from '../../types/types';
-import {
-  handleErrors,
-} from '../../helpers/helpers';
+import { handleErrors } from '../../helpers/helpers';
+import { WebSocketFactoryService } from './websocket-factory.service';
 
 @Injectable()
 export class MessageService {
@@ -25,18 +19,22 @@ export class MessageService {
   public connectedClients$!: Observable<ClientsMessage>;
   public socket$: WebSocketSubject<MessageType> | null = null;
 
-  constructor() {}
+  constructor(
+    private webSocketFactory: WebSocketFactoryService,
+  ) {}
 
   public connect(url: string): {
     clients$: Observable<ClientsMessage>;
     transmission$: Observable<DistressMessage>;
   } {
-    this.socket$ = webSocket<MessageType>({
+    
+    this.socket$ =  this.webSocketFactory.makeSocket<MessageType>({
       url,
       serializer,
       openObserver: this.ready$,
       closeObserver: this.closed$,
     });
+
     const transmission$ = this.socket$.pipe(
       filter(
         (m: MessageType): m is DistressMessage =>
@@ -56,7 +54,7 @@ export class MessageService {
       share()
     );
 
-    return { clients$, transmission$};
+    return { clients$, transmission$ };
   }
 
   sendMessage(message: MessageType): void {

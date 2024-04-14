@@ -33,7 +33,6 @@ export class AppComponent implements OnInit {
 
   constructor(
     private boatNameService: BoatNameService,
-    private messageService: MessageService
   ) {}
 
   addBoat() {
