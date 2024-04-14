@@ -9,6 +9,7 @@ import {
 import { MessageService } from '../core/services/message.service';
 import { Subscription } from 'rxjs';
 import { DeviceName } from '../app.component';
+import { environment } from '../../environments/environment.development';
 
 @Component({
   selector: 'safety-radio',
@@ -60,7 +61,7 @@ export class RadioComponent implements OnInit, OnDestroy {
 
     // TODO: move web socket url into .env file
     const { transmission$ } = this.messageService.connect(
-      'ws://localhost:8080'
+      environment.wssUrl
     );
 
     this.sub.add(

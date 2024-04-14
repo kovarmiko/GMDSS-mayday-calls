@@ -3,6 +3,7 @@ import { MessageService } from '../core/services/message.service';
 import { Client, ClientsMessage, ConnectionMessage } from '../types/types';
 import { takeUntil } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { environment } from '../../environments/environment.development';
 
 @Component({
   selector: 'safety-radar',
@@ -41,7 +42,7 @@ export class RadarComponent implements OnInit, OnDestroy {
       })
     );
 
-    const { clients$ } = this.messageService.connect('ws://localhost:8080');
+    const { clients$ } = this.messageService.connect(environment.wssUrl);
     this.sub.add(
       clients$.pipe(takeUntil(this.messageService.closed$)).subscribe({
         next: (m) => m && this.updateBoats(m),
