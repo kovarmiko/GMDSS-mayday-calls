@@ -2,7 +2,6 @@ import WebSocket from 'ws';
 import {
   Client,
   ClientsMessage,
-  ConnectionMessage,
   MessageType,
   RenameMessage,
 } from './src/app/types/types';
@@ -19,18 +18,13 @@ wss.on('connection', function connection(ws) {
   console.log('A new client connected.');
   ws.on('error', console.error);
 
-  ws.on('open', function open() {
-    ws.send('Hi I have joined');
-  });
-
   ws.on('close', function close() {
     clients.clear();
   });
 
   ws.on('message', function message(rawData: WebSocket.RawData) {
     console.log('received: %s', rawData);
-    const message = JSON.parse(rawData.toString()) as MessageType;
-    console.log(message);
+    const message = JSON.parse(rawData.toString());
 
     if (typeof message === 'string') {
       console.log(message, 'inside string condition');
@@ -66,7 +60,6 @@ wss.on('connection', function connection(ws) {
   });
 
   ws.on('close', () => {
-    // Broadcast the updated client list size
     ws.send(
       JSON.stringify({
         message: `A client has disconnected. Total clients: ${clients.size}`,
@@ -92,7 +85,7 @@ function broadcast(message: string) {
 }
 
 function deleteClientByCallSign(callSign: string) {
-  clients.forEach((c, index) =>
+  clients.forEach((c) =>
     c.callSign === callSign ? clients.delete(c) : c
   );
 }
