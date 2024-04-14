@@ -4,7 +4,11 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Run `npm install` populate the node_modules folder in order to set up depenencies
+
+Run `npm run wss:start` to start the websocket server. Please note that this should run in a separate process from the main development server for the angular app.
+
+In a separate terminal window `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
 ## Code scaffolding
 
