@@ -100,11 +100,11 @@ export class RadioComponent implements OnInit, OnDestroy {
     console.log(`Boat ${this.deviceName} received message:`, message);
     this.messages = [...this.messages, message];
     if (this.type === 'station') {
-      this.alertUser(message);
+      this.checkMessageForAlerts(message);
     }
   }
 
-  alertUser(message: DistressMessage) {
+  checkMessageForAlerts(message: DistressMessage) {
     const keyWords = this.keywords
       .split(',')
       .map((word) => word.toLowerCase().trim());
