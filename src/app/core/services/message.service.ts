@@ -6,7 +6,6 @@ import {
   ClientsMessage,
   DistressMessage,
   MessageType,
-  RenameMessage,
 } from '../../types/types';
 import { handleErrors } from '../../helpers/helpers';
 import { WebSocketFactoryService } from './websocket-factory.service';
