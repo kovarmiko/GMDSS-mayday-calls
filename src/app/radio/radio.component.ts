@@ -140,6 +140,7 @@ export class RadioComponent implements OnInit, OnDestroy {
     };
 
     this.messageService.sendMessage(message);
+    this.receivedName = message
   }
 
   private createConnectionMessage(
