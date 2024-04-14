@@ -1,6 +1,6 @@
 <h6 class="mt-3">Boats on Radar</h6>
 
-<ul class="ps-0">
+<ul class="ps-0 radar-items">
   @for (boat of boatsInRange; track $index) {
   <li >{{ boat.deviceName }} {{ boat.callSign }}</li>
   } @empty {
