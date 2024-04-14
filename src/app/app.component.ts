@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { BoatNameService } from './core/services/boat-name.service';
 import { MessageService } from './core/services/message.service';
 

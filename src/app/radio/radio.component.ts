@@ -8,7 +8,6 @@ import {
 } from '../types/types';
 import { MessageService } from '../core/services/message.service';
 import { Subscription } from 'rxjs';
-import { BoatNameService } from '../core/services/boat-name.service';
 import { DeviceName } from '../app.component';
 
 @Component({
@@ -37,7 +36,6 @@ export class RadioComponent implements OnInit, OnDestroy {
 
   constructor(
     private messageService: MessageService,
-    private boatNameService: BoatNameService
   ) {}
 
   ngOnInit() {
