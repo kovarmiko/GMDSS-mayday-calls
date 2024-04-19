@@ -18,10 +18,6 @@ wss.on('connection', function connection(ws) {
   console.log('A new client connected.');
   ws.on('error', console.error);
 
-  ws.on('close', function close() {
-    clients.clear();
-  });
-
   ws.on('message', function message(rawData: WebSocket.RawData) {
     console.log('received: %s', rawData);
     const message = JSON.parse(rawData.toString());
@@ -45,13 +41,14 @@ wss.on('connection', function connection(ws) {
         case 'disconnect':
           deleteClientByCallSign(message.callSign);
           messageClientList(ws);
+          broadcast(message);
           break;
         case 'rename':
-         clients = updateItemInClientSet(message);
+          clients = updateItemInClientSet(message);
           messageClientList(ws);
           break;
         case 'transmission':
-          broadcast(JSON.stringify(message));
+          broadcast(message);
           break;
         default:
           break;
@@ -65,6 +62,9 @@ wss.on('connection', function connection(ws) {
         message: `A client has disconnected. Total clients: ${clients.size}`,
       })
     );
+    if (wss.clients.size === 0) {
+      clients.clear();
+    }
   });
 });
 
@@ -73,21 +73,18 @@ function messageClientList(ws: WebSocket) {
     clients: Array.from(clients),
     type: 'client',
   };
-  const stringifiedMessage = JSON.stringify(message);
-  console.log(`Sending connected clients message ${stringifiedMessage}`);
-  broadcast(stringifiedMessage);
+  console.log(`Sending connected clients message ${message}`);
+  broadcast(message);
 }
 
-function broadcast(message: string) {
+function broadcast(message: MessageType) {
   wss.clients.forEach((ws) => {
-    ws.send(message);
+    ws.send(JSON.stringify(message));
   });
 }
 
 function deleteClientByCallSign(callSign: string) {
-  clients.forEach((c) =>
-    c.callSign === callSign ? clients.delete(c) : c
-  );
+  clients.forEach((c) => (c.callSign === callSign ? clients.delete(c) : c));
 }
 
 function updateItemInClientSet(message: RenameMessage) {

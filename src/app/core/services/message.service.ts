@@ -4,6 +4,7 @@ import { catchError, filter, share, tap } from 'rxjs/operators';
 import { Observable, Subject } from 'rxjs';
 import {
   ClientsMessage,
+  ConnectionMessage,
   DistressMessage,
   MessageType,
 } from '../../types/types';
@@ -25,6 +26,7 @@ export class MessageService {
   public connect(url: string): {
     clients$: Observable<ClientsMessage>;
     transmission$: Observable<DistressMessage>;
+    connections$: Observable<ConnectionMessage>;
   } {
     
     this.socket$ =  this.webSocketFactory.makeSocket<MessageType>({
@@ -44,16 +46,25 @@ export class MessageService {
     );
 
     const clients$ = this.socket$.pipe(
-      tap((m) => console.log('connected client', m)),
+      tap((m) => console.log('connected clients', m)),
       filter(
         (m: MessageType): m is ClientsMessage =>
           typeof m !== 'string' && m.type === 'client'
+      ),
+
+      catchError(handleErrors),
+      share()
+    );
+    const connections$ = this.socket$.pipe(
+      filter(
+        (m: MessageType): m is ConnectionMessage =>
+          typeof m !== 'string' &&  (m.type === 'connect' || m.type === 'disconnect')
       ),
       catchError(handleErrors),
       share()
     );
 
-    return { clients$, transmission$ };
+    return { clients$, transmission$, connections$ };
   }
 
   sendMessage(message: MessageType): void {

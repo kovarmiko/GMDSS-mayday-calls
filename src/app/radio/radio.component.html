@@ -41,6 +41,9 @@
 
   <button class="d-block" type="submit">Send</button>
 </form>
+@if(type === 'boat'){
+  <button class="d-block" (click)="disconnect()" type="button">Disconnect</button>
+}
 
 <h6 class="messages mt-3">Messages</h6>
 <ul class="list-group">

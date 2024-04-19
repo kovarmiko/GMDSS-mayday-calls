@@ -44,7 +44,7 @@ export class RadarComponent implements OnInit, OnDestroy {
 
     const { clients$ } = this.messageService.connect(environment.wssUrl);
     this.sub.add(
-      clients$.pipe(takeUntil(this.messageService.closed$)).subscribe({
+      clients$.subscribe({
         next: (m) => m && this.updateBoats(m),
         error: (e: unknown) => console.error(e),
         complete: () => console.info('completed clients transmission'),

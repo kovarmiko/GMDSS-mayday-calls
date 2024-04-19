@@ -31,13 +31,11 @@ export class RadioComponent implements OnInit, OnDestroy {
   public deviceName = '';
   public callSign = '';
   public keywords = '';
-  public receivedName: DeviceName = {deviceName: '', callSign: ''}
+  public receivedName: DeviceName = { deviceName: '', callSign: '' };
 
   private sub = new Subscription();
 
-  constructor(
-    private messageService: MessageService,
-  ) {}
+  constructor(private messageService: MessageService) {}
 
   ngOnInit() {
     // don't send message for radar if you are not a boat
@@ -60,9 +58,7 @@ export class RadioComponent implements OnInit, OnDestroy {
     );
 
     // TODO: move web socket url into .env file
-    const { transmission$ } = this.messageService.connect(
-      environment.wssUrl
-    );
+    const { transmission$ } = this.messageService.connect(environment.wssUrl);
 
     this.sub.add(
       transmission$.subscribe({
@@ -94,6 +90,15 @@ export class RadioComponent implements OnInit, OnDestroy {
     };
     this.messageService.sendMessage(distressMessage);
     return true;
+  }
+
+  disconnect() {
+    const message: ConnectionMessage = {
+      callSign: this.receivedName.callSign,
+      deviceName: this.receivedName.deviceName,
+      type: 'disconnect',
+    };
+    this.messageService.sendMessage(message);
   }
 
   receiveMessage(message: DistressMessage): void {
